@@ -218,20 +218,3 @@ paths:
           schema:
               $ref: "#/definitions/Pet"
 
-
-
-# TODO
-# 1. 3XX, 4XX, 5XX mock
-# 2. Authentication等
-# 3. 文件上传下载未测试
-# 3. 多文件路由
-
-# 参考文档:
-# https://github.com/swagger-api/swagger-node
-# http://blog.kazaff.me/2016/09/21/%E5%A6%82%E4%BD%95%E5%9F%BA%E4%BA%8E%E6%8E%A5%E5%8F%A3%E6%96%87%E6%A1%A3%E7%94%9F%E6%88%90%E6%A8%A1%E6%8B%9F%E6%95%B0%E6%8D%AE/
-# https://github.com/swagger-api/swagger-node/blob/master/docs/mock-mode.md
-# https://github.com/swagger-api/swagger-node/issues/384
-# Another mock server : https://github.com/BigstickCarpet/swagger-express-middleware
-
-
-

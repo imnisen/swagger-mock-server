@@ -83,7 +83,13 @@ swagger.conf    -> /etc/nginx/conf.d/swagger.conf
 - docker-compose.yaml 挂在对应目录 `./doc -> /run/doc`
 
 # Mock语法说明
-先参考 `doc/swagger.yaml`, 稍后会补充完整
+先参考 `doc/swagger.yaml` 中的 `x-mock` 语法部分, 稍后会补充完整
+
+# TODO
+- 1. 3XX, 4XX, 5XX mock支持
+- 2. Authentication等
+- 3. 文件上传下载未测试
+- 4. 多文件路由
 
 # 参考文档:
 - https://github.com/swagger-api/swagger-node
