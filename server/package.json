@@ -1,0 +1,27 @@
+{
+  "name": "moc_server",
+  "version": "0.0.1",
+  "private": true,
+  "description": "New Swagger API Project",
+  "keywords": [],
+  "author": "",
+  "license": "",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.12.3",
+    "swagger-express-mw": "^0.1.0"
+
+  },
+  "devDependencies": {
+    "should": "^7.1.0",
+    "supertest": "^1.0.0"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "test": "swagger project test",
+    "server": "DOCPATH='../doc/swagger.yaml' PORT=8888 swagger project start -m",
+    "docker_server": "swagger project start -m",
+    "edit": "swagger_swagger_fileName=../doc/swagger.yaml swagger project edit -p 9999",
+    "docker_edit": "swagger project edit"
+  }
+}

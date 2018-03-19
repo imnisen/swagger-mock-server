@@ -1,0 +1,237 @@
+swagger: '2.0'
+info:
+  description: '这是一个示例swagger文档'
+  version: 1.0.0
+  title: Swagger Demo
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+host: localhost:8888
+basePath: /v1
+
+tags:
+  - name: pet
+    description: Everything about your Pets
+    externalDocs:
+      description: Find out more
+      url: 'http://swagger.io'
+  - name: store
+    description: Access to Petstore orders
+  - name: user
+    description: Operations about user
+    externalDocs:
+      description: Find out more about our store
+      url: 'http://swagger.io'
+
+schemes:
+  - http
+  - https
+
+consumes:
+  - application/json
+produces:
+  - application/json
+
+definitions:
+  Pet:
+    type: "object"
+    required:
+      - "name"
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+        # x-mock: name 示例：定义的对象也可以加mock
+      age:
+        type: integer
+
+  ApiResponse:
+    type: "object"
+    properties:
+      code:
+        type: integer
+      type:
+        type: string
+      message:
+        type: string
+
+paths:
+  /pets:
+    # 为了使mock server有用， 加上此属性
+    x-swagger-router-controller: pets
+
+    get:
+      tags:
+        - "pet"
+      description: "获取所有的宠物数据"
+      parameters:
+        - name: "age"
+          in: "query"
+          description: "ages to filter"
+          type: string
+        - name: "name"
+          in: "query"
+          description: "name to filter"
+          type: string
+        - name: "status"
+          in: "query"
+          description: "Status values that need to be considered for filter"
+          type: "array"
+          items:
+            type: "string"
+            default: "available"
+            enum:
+            - "available"
+            - "pending"
+            - "sold"
+          collectionFormat: "multi"
+
+      responses:
+        200:
+          description: "get successfully"
+          schema:
+            # 示例1: 返回数组，其中每个元素的结构用ref指定
+            type: array
+            items:
+              $ref: "#/definitions/Pet"
+
+            # # 示例2: 返回数组，手动指定数组
+            # type: array
+            # items:
+            #   type: object
+            #   properties:
+            #     id:
+            #       type: integer
+            #     name:
+            #       type: string
+            #       # # 示例1 指定default, 会默认返回此数据
+            #       # default: "qqqq"
+
+            #       # # 示例2 string时可以指定format: date or date-time
+            #       # format: date
+            #     age:
+            #       type: integer
+
+        # # TODO 500等错误返回数据如何mock，有待研究
+        # 403:
+        #   description: "Forbidden"
+        #   schema:
+        #     $ref: "#/definitions/ApiResponse"
+
+    post:
+      tags:
+        - "pet"
+      description: '新建一个宠物'
+      # 单独指定接收和返回的content-type
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: "body"
+          description: "创建的宠物数据"
+          required: true
+          schema:
+            $ref: "#/definitions/Pet"  # 如果post的数据不含"name" 或者 name的值为数字会报校验错误
+      responses:
+        200:
+          description: 'ok'
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+              result:
+                type: object
+                properties:
+                  email:
+                    # 示例1，使用x-mock指定mock的array长度(默认为3，最长20)
+                    type: array
+                    items:
+                      description: "email string"
+                      type: string
+                    x-mock: array|10
+
+                    # # 示例2，使用x-mock指定mock的array具体元素
+                    # type: array
+                    # items:
+                    #   description: "email string"
+                    #   type: string
+                    #   x-mock: ip
+
+                    # # 示例3: 使用x-mock使得返回结果每次递增3
+                    # type: integer
+                    # x-mock: step|3
+
+                    # # 示例4: 使用x-mock模拟email
+                    # type: string
+                    # x-mock: email
+
+                    # # 示例5: 使用x-mock模拟datatime or date
+                    # type: string
+                    # x-mock: datetime
+
+                    # # 示例6: 使用x-mock模拟长字符串
+                    # type: string
+                    # x-mock: text
+
+                    # # 示例7: 使用x-mock指定中文返回，适用于tile|cn  or text|cn
+                    # type: string
+                    # x-mock: title|cn
+
+
+        405:
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+
+        500:
+          description: "Forbidden"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+
+        # # TODO 我试验下mock server 是不支持的这样返回的，虽然swagger标准是支持的
+        # default:
+        #   description: "successful operation"
+
+
+  /pet/{petname}:
+    x-swagger-router-controller: pet
+
+    # 将常用的对象提取到definitions中 使用ref在多处指代
+    get:
+      description: "获取一条宠物数据"
+      parameters:
+        - name: "petname"
+          in: "path"
+          description: "which pet need?"
+          required: true
+          type: "string"
+      responses:
+        '200':
+          description: 'get successfully'
+          schema:
+              $ref: "#/definitions/Pet"
+
+
+
+# TODO
+# 1. 3XX, 4XX, 5XX mock
+# 2. Authentication等
+# 3. 文件上传下载未测试
+# 3. 多文件路由
+
+# 参考文档:
+# https://github.com/swagger-api/swagger-node
+# http://blog.kazaff.me/2016/09/21/%E5%A6%82%E4%BD%95%E5%9F%BA%E4%BA%8E%E6%8E%A5%E5%8F%A3%E6%96%87%E6%A1%A3%E7%94%9F%E6%88%90%E6%A8%A1%E6%8B%9F%E6%95%B0%E6%8D%AE/
+# https://github.com/swagger-api/swagger-node/blob/master/docs/mock-mode.md
+# https://github.com/swagger-api/swagger-node/issues/384
+# Another mock server : https://github.com/BigstickCarpet/swagger-express-middleware
+
+
+

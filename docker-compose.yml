@@ -1,0 +1,23 @@
+version: '2'
+services:
+  swagger_ui:
+    image: nginx:alpine
+    volumes:
+      - ./ui/dist:/usr/share/nginx/swagger_ui
+      - ./doc:/usr/share/nginx/doc
+      - ./ui/swagger.conf:/etc/nginx/conf.d/swagger.conf
+    restart: always
+    ports:
+      - 7777:7777
+
+  swagger_mock_server:
+    build: ./server
+    environment:
+      - DOCPATH=../doc/swagger.yaml
+      - PORT=8888
+    volumes:
+      - ./doc:/run/doc
+    restart: always
+    ports:
+      - 8888:8888
+
