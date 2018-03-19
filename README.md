@@ -77,7 +77,7 @@ swagger.conf    -> /etc/nginx/conf.d/swagger.conf
 - docker-compose.yaml 挂在对应目录 `./doc -> /run/doc`
 
 # Mock语法说明
-TODO
+先参考 `doc/swagger.yaml`, 稍后会补充完整
 
 # 参考文档:
 - https://github.com/swagger-api/swagger-node
