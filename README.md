@@ -5,7 +5,8 @@
 
 # 使用说明
 ## 安装和运行
-项目的部署需要安装docker 和 docker compose, 服务器部署时采用docker compose: `docker-compose up -d`, 可以直接运行mock server和ui.
+项目的部署需要安装docker 和 docker compose, 服务器部署时采用docker compose: `docker-compose up -d`, 可以直接运行mock server和ui,
+然后在7777端口可以看到ui界面,ui里的"Try it out"调用mock server返回假数据.
 
 下面分别介绍ui和mocker server的安装和启动
 
